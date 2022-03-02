@@ -3,6 +3,7 @@ package com.turkcell.rentACarProject.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentACarProject.business.abstracts.CarService;
-import com.turkcell.rentACarProject.business.dtos.GetCarDto;
-import com.turkcell.rentACarProject.business.dtos.ListCarDto;
+import com.turkcell.rentACarProject.business.dtos.car.GetCarDto;
+import com.turkcell.rentACarProject.business.dtos.car.ListCarDto;
 import com.turkcell.rentACarProject.business.requests.car.CreateCarRequest;
 import com.turkcell.rentACarProject.business.requests.car.DeleteCarRequest;
 import com.turkcell.rentACarProject.business.requests.car.UpdateCarRequest;
+import com.turkcell.rentACarProject.core.utilities.results.DataResult;
+import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -30,28 +33,49 @@ public class CarController {
 		this.carService = carService;
 	}
 
-	@GetMapping("/getall")
-	public List<ListCarDto> getAll() {
-		return this.carService.getAll();
-	}
-
 	@PostMapping("/create")
-	public void add(@RequestBody CreateCarRequest createCarRequest) {
-		this.carService.create(createCarRequest);
+	public Result add(@RequestBody CreateCarRequest createCarRequest) {
+		return this.carService.create(createCarRequest);
+	}
+	
+	@GetMapping("/get")
+	public DataResult<GetCarDto> get(@RequestParam int id) {
+		return this.carService.getById(id);
+	}
+	
+	@PutMapping("/update")
+	public Result update(@RequestBody UpdateCarRequest updateCarRequest) {
+		return this.carService.update(updateCarRequest);
 	}
 
 	@DeleteMapping("/delete")
-	public void delete(@RequestBody DeleteCarRequest deleteCarRequest) {
-		this.carService.delete(deleteCarRequest);
+	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
+		return this.carService.delete(deleteCarRequest);
 	}
 
-	@PutMapping("/update")
-	public void update(@RequestBody UpdateCarRequest updateCarRequest) {
-		this.carService.update(updateCarRequest);
+	@GetMapping("/getAll")
+	public DataResult<List<ListCarDto>> getAll() {
+		return this.carService.getAll();
 	}
+	
+	@GetMapping("/getAllPaged")
+	DataResult<List<ListCarDto>> getAllPaged(int pageNo, int pageSize) {
+		return this.carService.getAllPaged(pageNo, pageSize);
+		
+	}
+	
+	@GetMapping("/getAllSorted")
+	DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) {
+		return this.carService.getAllSorted(direction);
+		
+	}
+	
+	@GetMapping("/getAllByDailyPriceLessThanEqual")
+	DataResult<List<ListCarDto>> getAllByDailyPriceLessThanEqual(double dailyPrice) {
+		return this.carService.getAllByDailyPriceLessThanEqual(dailyPrice);
+		
+	}
+	
 
-	@GetMapping("/get")
-	public GetCarDto get(@RequestParam int id) {
-		return this.carService.getById(id);
-	}
+	
 }
