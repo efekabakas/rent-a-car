@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentACarProject.business.abstracts.ColorService;
-import com.turkcell.rentACarProject.business.dtos.color.GetColorDto;
 import com.turkcell.rentACarProject.business.dtos.color.ListColorDto;
 import com.turkcell.rentACarProject.business.requests.color.CreateColorRequest;
 import com.turkcell.rentACarProject.business.requests.color.DeleteColorRequest;
@@ -46,9 +45,9 @@ public class ColorManager implements ColorService {
 	}
 
 	@Override
-	public GetColorDto getById(int id) {
+	public ListColorDto getById(int id) {
 		Color result = this.colorDao.getColorById(id);
-		GetColorDto response = this.modelMapperService.forDto().map(result, GetColorDto.class);
+		ListColorDto response = this.modelMapperService.forDto().map(result, ListColorDto.class);
 		return response;
 	}
 

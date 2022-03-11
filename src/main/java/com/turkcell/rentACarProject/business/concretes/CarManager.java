@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentACarProject.business.abstracts.CarService;
-import com.turkcell.rentACarProject.business.dtos.car.GetCarDto;
+import com.turkcell.rentACarProject.business.constants.Messages;
 import com.turkcell.rentACarProject.business.dtos.car.ListCarDto;
 import com.turkcell.rentACarProject.business.requests.car.CreateCarRequest;
 import com.turkcell.rentACarProject.business.requests.car.DeleteCarRequest;
@@ -50,15 +50,14 @@ public class CarManager implements CarService {
 	public Result create(CreateCarRequest createCarRequest) {
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
 		this.carDao.save(car);
-		
-		return new SuccessResult("Product added.");
+		return new SuccessResult(Messages.CarAdded);
 	}
 
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
 		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
 		this.carDao.delete(car);
-		return new SuccessResult("Product deleted.");
+		return new SuccessResult(Messages.CarDeleted);
 		
 	}
 
@@ -66,22 +65,23 @@ public class CarManager implements CarService {
 	public Result update(UpdateCarRequest updateCarRequest) {
 		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
 		this.carDao.save(car);
-		return new SuccessResult("Product updated.");
+		return new SuccessResult(Messages.CarUpdated);
 		
 	}
 
 	@Override
-	public DataResult<GetCarDto> getById(int id) {
+	public DataResult<ListCarDto> getById(int id) {
 		
 		Car result = this.carDao.getCarById(id);
 		
 		if(result == null) {
-			return new ErrorDataResult<GetCarDto>(null, "Car.NotFound");
+			
+			return new ErrorDataResult<ListCarDto>("Car.NotFound");
 		}
 		
-		GetCarDto response = this.modelMapperService.forDto().map(result, GetCarDto.class);
+		ListCarDto response = this.modelMapperService.forDto().map(result, ListCarDto.class);
 		
-		return new SuccessDataResult<GetCarDto>(response);
+		return new SuccessDataResult<ListCarDto>(response);
 	}
 
 	@Override

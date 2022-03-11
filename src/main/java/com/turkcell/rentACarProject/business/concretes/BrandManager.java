@@ -6,16 +6,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.turkcell.rentACarProject.core.exceptions.BusinessException;
-import com.turkcell.rentACarProject.core.utilities.mapping.ModelMapperService;
-import com.turkcell.rentACarProject.entities.concretes.Brand;
 import com.turkcell.rentACarProject.business.abstracts.BrandService;
-import com.turkcell.rentACarProject.business.dtos.brand.GetBrandDto;
 import com.turkcell.rentACarProject.business.dtos.brand.ListBrandDto;
 import com.turkcell.rentACarProject.business.requests.brand.CreateBrandRequest;
 import com.turkcell.rentACarProject.business.requests.brand.DeleteBrandRequest;
 import com.turkcell.rentACarProject.business.requests.brand.UpdateBrandRequest;
+import com.turkcell.rentACarProject.core.exceptions.BusinessException;
+import com.turkcell.rentACarProject.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentACarProject.dataAccess.abstracts.BrandDao;
+import com.turkcell.rentACarProject.entities.concretes.Brand;
 
 @Service
 public class BrandManager implements BrandService {
@@ -40,36 +39,41 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public void create(CreateBrandRequest createBrandRequest) throws BusinessException {
+
+		checkIfBrandExists(createBrandRequest.getName());
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
-		checkIfBrandExists(brand);
+
 		this.brandDao.save(brand);
 	}
 
 	@Override
-	public GetBrandDto getById(int id) throws BusinessException {
+	public ListBrandDto getById(int id) throws BusinessException { // Result
 		Brand result = this.brandDao.getBrandById(id);
-		GetBrandDto response = this.modelMapperService.forDto().map(result, GetBrandDto.class);
+		/*
+		 * if (result==null) { return new ErrorDataResult<>(); }
+		 */
+		ListBrandDto response = this.modelMapperService.forDto().map(result, ListBrandDto.class);
 		return response;
 
 	}
 
-	public void checkIfBrandExists(Brand brand) throws BusinessException {
-		if (this.brandDao.getBrandByName(brand.getName()).stream().count() != 0) {
-			throw new BusinessException("Brand already exists!");
-		}
-	}
-
 	@Override
-	public void delete(DeleteBrandRequest deleteBrandRequest){
+	public void delete(DeleteBrandRequest deleteBrandRequest) {
 		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandDao.delete(brand);
-		
+
 	}
 
 	@Override
 	public void update(UpdateBrandRequest updateBrandRequest) {
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 		this.brandDao.save(brand);
-		
+
+	}
+
+	private void checkIfBrandExists(String brandName) throws BusinessException {
+		if (this.brandDao.getBrandByName(brandName).stream().count() != 0) {
+			throw new BusinessException("Brand already exists!");
+		}
 	}
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentACarProject.business.abstracts.ColorService;
-import com.turkcell.rentACarProject.business.dtos.color.GetColorDto;
 import com.turkcell.rentACarProject.business.dtos.color.ListColorDto;
 import com.turkcell.rentACarProject.business.requests.color.CreateColorRequest;
 import com.turkcell.rentACarProject.business.requests.color.DeleteColorRequest;
@@ -32,7 +31,7 @@ public class ColorsController {
 		this.colorService = colorService;
 	}
 	
-	@GetMapping("/getall")
+	@GetMapping("/getAll")
 	public List<ListColorDto> getAll(){
 		return this.colorService.getAll();
 	}
@@ -53,7 +52,7 @@ public class ColorsController {
 	}
 	
 	@GetMapping("/get")
-	public GetColorDto get(@RequestParam int id) throws BusinessException {
+	public ListColorDto get(@RequestParam int id) throws BusinessException {
 		return this.colorService.getById(id);
 	}
 }

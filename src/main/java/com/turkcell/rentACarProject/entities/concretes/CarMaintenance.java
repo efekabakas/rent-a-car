@@ -30,6 +30,8 @@ public class CarMaintenance {
 	@Column(name="description")
 	private String description;
 	
+	//rent date
+	
 	@Column(name="return_date")
 	private LocalDate returnDate;
 	

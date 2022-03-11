@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,35 +22,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="cars")
-public class Car {
+@Table(name="additional_services")
+public class OrderedAdditionalService {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id") 	
 	private int id;
 	
-	@Column(name = "daily_price")
-	private double dailyPrice;
-	
-	@Column(name = "model_year")
-	private int modelYear;
-	
-	@Column(name = "description")
-	private String description;
+	@ManyToOne
+	@JoinColumn(name = "additional_service_item_id") 
+	private AdditionalServiceItem additionalServiceItem;	
 	
 	@ManyToOne
-	@JoinColumn(name= "brand_id")
-	private Brand brand;
-	
-	@ManyToOne
-	@JoinColumn(name= "color_id")
-	private Color color;
-	
-	@OneToMany(mappedBy = "car")
-	private List<CarMaintenance> carMaintenances;
-	
-	@OneToMany(mappedBy = "car")
-    private List<Rental> rentals;
+	@JoinColumn(name = "rental_id")  
+	private Rental rental; 
 	
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentACarProject.business.abstracts.CarService;
-import com.turkcell.rentACarProject.business.dtos.car.GetCarDto;
 import com.turkcell.rentACarProject.business.dtos.car.ListCarDto;
 import com.turkcell.rentACarProject.business.requests.car.CreateCarRequest;
 import com.turkcell.rentACarProject.business.requests.car.DeleteCarRequest;
@@ -39,7 +38,7 @@ public class CarController {
 	}
 	
 	@GetMapping("/get")
-	public DataResult<GetCarDto> get(@RequestParam int id) {
+	public DataResult<ListCarDto> get(@RequestParam int id) {
 		return this.carService.getById(id);
 	}
 	

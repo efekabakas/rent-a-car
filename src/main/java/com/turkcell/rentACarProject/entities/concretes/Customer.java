@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "customers")
 public class Customer extends User {
-
+	
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
     private List<Rental> rentals;
