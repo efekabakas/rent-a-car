@@ -22,12 +22,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "additional_service_items")
 public class AdditionalServiceItem { 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id") 
 	private int id; 
+	
 	@Column(name="name") 
 	private String name;
+	
 	@Column(name="price") 
 	private double price;
 	

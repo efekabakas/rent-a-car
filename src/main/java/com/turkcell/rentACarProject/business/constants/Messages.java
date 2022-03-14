@@ -16,4 +16,5 @@ public class Messages {
 	public static final String CarUpdated = "car.updated";
 	public static final String RentalDeleted = "rental.deleted";
 	public static final String RentalNotFound = "rental.not.found";
+	public static final String CityAdded = "city.added";
 }

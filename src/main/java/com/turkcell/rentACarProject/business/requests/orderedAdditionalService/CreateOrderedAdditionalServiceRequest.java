@@ -1,14 +1,15 @@
-package com.turkcell.rentACarProject.business.dtos.additionalService;
+package com.turkcell.rentACarProject.business.requests.orderedAdditionalService;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ListAdditionalServiceDto {
-	private int id;
+@NoArgsConstructor
+public class CreateOrderedAdditionalServiceRequest {
+	
 	private int rentalId;
 	private int additionalServiceItemId;
+
 }

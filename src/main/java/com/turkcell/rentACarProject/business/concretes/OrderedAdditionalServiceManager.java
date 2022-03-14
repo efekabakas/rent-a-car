@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.turkcell.rentACarProject.business.abstracts.AdditionalServiceService;
+import com.turkcell.rentACarProject.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentACarProject.business.abstracts.RentalService;
-import com.turkcell.rentACarProject.business.dtos.additionalService.ListAdditionalServiceDto;
-import com.turkcell.rentACarProject.business.requests.additionalService.CreateAdditionalServiceRequest;
+import com.turkcell.rentACarProject.business.dtos.orderedAdditionalService.ListOrderedAdditionalServiceDto;
+import com.turkcell.rentACarProject.business.requests.orderedAdditionalService.CreateOrderedAdditionalServiceRequest;
 import com.turkcell.rentACarProject.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentACarProject.core.utilities.results.DataResult;
 import com.turkcell.rentACarProject.core.utilities.results.Result;
@@ -18,15 +19,15 @@ import com.turkcell.rentACarProject.core.utilities.results.SuccessResult;
 import com.turkcell.rentACarProject.dataAccess.abstracts.AdditionalServiceDao;
 import com.turkcell.rentACarProject.entities.concretes.OrderedAdditionalService;
 @Service
-public class AdditionalServiceManager implements AdditionalServiceService{
+public class OrderedAdditionalServiceManager implements OrderedAdditionalServiceService{
 	
 	private AdditionalServiceDao additionalServiceDao;
 	private ModelMapperService modelMapperService;
 	private RentalService rentalService;
 		
 	@Autowired
-	public AdditionalServiceManager(AdditionalServiceDao additionalServiceDao, ModelMapperService modelMapperService,
-			RentalService rentalService) {
+	public OrderedAdditionalServiceManager(AdditionalServiceDao additionalServiceDao, ModelMapperService modelMapperService,
+			@Lazy RentalService rentalService) {
 		super();
 		this.additionalServiceDao = additionalServiceDao;
 		this.modelMapperService = modelMapperService;
@@ -34,7 +35,7 @@ public class AdditionalServiceManager implements AdditionalServiceService{
 	}
 	
 	@Override
-	public Result add(CreateAdditionalServiceRequest createAdditionalServiceRequest) {
+	public Result add(CreateOrderedAdditionalServiceRequest createAdditionalServiceRequest) {
 		OrderedAdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest, OrderedAdditionalService.class);
 		
 		additionalService.setId(0);
@@ -43,13 +44,13 @@ public class AdditionalServiceManager implements AdditionalServiceService{
 	}
 
 	@Override
-	public DataResult<List<ListAdditionalServiceDto>> findAllByRentalId(int rentalId) {
+	public DataResult<List<ListOrderedAdditionalServiceDto>> findAllByRentalId(int rentalId) {
 		List<OrderedAdditionalService> additionalServiceList = this.additionalServiceDao.findAllByRentalId(rentalId);
-		List<ListAdditionalServiceDto> response = additionalServiceList.stream().map(
-				additionalService -> modelMapperService.forDto().map(additionalService, ListAdditionalServiceDto.class))
+		List<ListOrderedAdditionalServiceDto> response = additionalServiceList.stream().map(
+				additionalService -> modelMapperService.forDto().map(additionalService, ListOrderedAdditionalServiceDto.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<ListAdditionalServiceDto>>(response);
+		return new SuccessDataResult<List<ListOrderedAdditionalServiceDto>>(response);
 	}
 	
 	/*private Result checkIfRentalExists(int rentalId) {
