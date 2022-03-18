@@ -13,3 +13,6 @@ public interface RentalDao extends JpaRepository<Rental, Integer> {
 	List<Rental> findAllByCustomer_CustomerId(int customerId);
 	Rental findByCarIdAndReturnDateIsNull(int carId);
 }
+
+
+

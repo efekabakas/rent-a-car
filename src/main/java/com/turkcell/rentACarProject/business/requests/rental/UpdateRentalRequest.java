@@ -25,5 +25,7 @@ public class UpdateRentalRequest {
     private int initialCityId;
     private int returnCityId;
     private int customerId;
+    private int initialMileage;
+    private int returnMileage;
 }
 

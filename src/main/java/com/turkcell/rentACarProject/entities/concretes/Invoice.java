@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -16,26 +17,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name="carMaintenances")
+@AllArgsConstructor
 @Entity
-public class CarMaintenance {
-
+@Table(name = "invoices")
+public class Invoice {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="car_maintenance_id")
-	private int carMaintenanceId;
+	@Column(name = "id")
+	private int id;
 	
-	@Column(name="description")
-	private String description;
+	@Column(name = "invoice_number")
+	private String invoiceNumber;
 	
-	@Column(name="return_date")
-	private LocalDate returnDate;
+	@Column(name = "creation_date")
+	private LocalDate creationDate;
+	
+	@Column(name = "number_of_days_rented")
+	private int numberOfDaysRented;
+	
+	@OneToOne
+	@JoinColumn(name = "rental_id")
+	private Rental rental;
 	
 	@ManyToOne
-	@JoinColumn(name="car_id")
-	private Car car;
-	
-	
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 }

@@ -57,7 +57,8 @@ public class RentalManager implements RentalService {
 	public Result createForCorporateCustomer(CreateRentalRequest createRentalRequest) throws BusinessException {
 
 		carMaintenanceService.isCarInMaintenance(createRentalRequest.getCarId());
-		   
+		isCarRented(createRentalRequest.getCarId());   								
+		
 	    Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 	    this.rentalDao.save(rental);
 	    
@@ -68,37 +69,32 @@ public class RentalManager implements RentalService {
 	public Result createForIndividualCustomer(CreateRentalRequest createRentalRequest) throws BusinessException {
 
 		carMaintenanceService.isCarInMaintenance(createRentalRequest.getCarId());
-		   
+		isCarRented(createRentalRequest.getCarId());
+		
 	    Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 	    this.rentalDao.save(rental);
 	    
 	    return new SuccessResult(Messages.RentalAdded);
 	}
 	
-	@Override
-	public Result isCarRented(int id) throws BusinessException {
-		
-		if(this.rentalDao.findByCarIdAndReturnDateIsNull(id) != null) {
-			throw new BusinessException(Messages.ThisCarIsRental);
-		}
-		else
-			return new SuccessResult();
-	}
 
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) {
+		
 		Rental rental = this.modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
 		this.rentalDao.delete(rental);
+		
 		return new SuccessResult(Messages.RentalDeleted);
 	}
 
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
 		
+		carMaintenanceService.isCarInMaintenance(updateRentalRequest.getCarId());
+		
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
-		
 		rental.setTotalPrice(rentalCalculation(rental));
-		
+		updateReturnMileage(rental);
 		this.rentalDao.save(rental);
 		
 		return new SuccessResult(Messages.CarUpdated);
@@ -151,6 +147,20 @@ public class RentalManager implements RentalService {
 		totalPrice += days * carService.getById(rental.getCar().getId()).getData().getCarDailyPrice();
 
 		return totalPrice;
+	}
+	
+	@Override
+	public Result isCarRented(int id) throws BusinessException {
+		
+		if(this.rentalDao.findByCarIdAndReturnDateIsNull(id) != null) {
+			throw new BusinessException(Messages.ThisCarIsRental);
+		}
+		else
+			return new SuccessResult();
+	}
+	private void updateReturnMileage(Rental rental) {
+		
+		carService.getById(rental.getCar().getId()).getData().setMileage(rental.getReturnMileage());
 	}
 
 }

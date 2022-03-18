@@ -2,6 +2,7 @@ package com.turkcell.rentACarProject.entities.concretes;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -11,10 +12,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,7 +24,7 @@ public class Customer extends User {
 	@Column(name="customer_id", insertable= false, updatable = false)
 	private int customerId;
 	
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Rental> rentals;
 }

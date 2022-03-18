@@ -6,10 +6,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,6 +23,5 @@ public class IndividualCustomer extends Customer {
 	private String lastName;
 	
 	@Column(name="identity_number")
-	private int identityNumber;
-    
+	private int identityNumber; 
 }

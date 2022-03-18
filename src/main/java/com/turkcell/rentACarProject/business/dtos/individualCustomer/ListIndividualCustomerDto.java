@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListIndividualCustomerDto {
+	
 	private int id;
 	private String email;
 	private String password;
 	private String firstName;
 	private String lastName;
-	private int identityNumber;
+	private String identityNumber;
 }

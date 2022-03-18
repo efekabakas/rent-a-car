@@ -28,7 +28,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 	@Autowired
 	public OrderedAdditionalServiceManager(AdditionalServiceDao additionalServiceDao, ModelMapperService modelMapperService,
 			@Lazy RentalService rentalService) {
-		super();
+
 		this.additionalServiceDao = additionalServiceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentalService = rentalService;

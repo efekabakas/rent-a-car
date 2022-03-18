@@ -16,5 +16,6 @@ public class ListRentalDto {
     private double totalPrice;
     private int customerId;
     private int carId;
-
+    private int initialMileage;
+    private int returnMileage;
 }
