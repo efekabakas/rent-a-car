@@ -18,4 +18,6 @@ public class ListRentalDto {
     private int carId;
     private int initialMileage;
     private int returnMileage;
+	private int initialCityId;
+	private int returnCityId;
 }

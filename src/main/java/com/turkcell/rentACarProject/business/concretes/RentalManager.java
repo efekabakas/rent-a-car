@@ -67,7 +67,7 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result createForIndividualCustomer(CreateRentalRequest createRentalRequest) throws BusinessException {
-
+		
 		carMaintenanceService.isCarInMaintenance(createRentalRequest.getCarId());
 		isCarRented(createRentalRequest.getCarId());
 		
