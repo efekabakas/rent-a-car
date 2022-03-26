@@ -24,7 +24,10 @@ public class Customer extends User {
 	@Column(name="customer_id", insertable= false, updatable = false)
 	private int customerId;
 	
-	@OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "customer")
+	private List<CreditCardDetails> creditCards;
+	
+	@OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}) //merge
     @JsonIgnore
     private List<Rental> rentals;
 }

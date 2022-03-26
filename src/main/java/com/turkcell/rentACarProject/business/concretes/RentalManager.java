@@ -1,5 +1,6 @@
 package com.turkcell.rentACarProject.business.concretes;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,8 +94,14 @@ public class RentalManager implements RentalService {
 		carMaintenanceService.isCarInMaintenance(updateRentalRequest.getCarId());
 		
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+		
+		LocalDate estimatedDate = getById(updateRentalRequest.getId()).getData().getReturnDate();
+		
+		
 		rental.setTotalPrice(rentalCalculation(rental));
+		
 		updateReturnMileage(rental);
+		
 		this.rentalDao.save(rental);
 		
 		return new SuccessResult(Messages.CarUpdated);
@@ -145,7 +152,8 @@ public class RentalManager implements RentalService {
 			days = 1;
 		
 		totalPrice += days * carService.getById(rental.getCar().getId()).getData().getCarDailyPrice();
-
+		
+		
 		return totalPrice;
 	}
 	
@@ -158,9 +166,23 @@ public class RentalManager implements RentalService {
 		else
 			return new SuccessResult();
 	}
+	
 	private void updateReturnMileage(Rental rental) {
 		
 		carService.getById(rental.getCar().getId()).getData().setMileage(rental.getReturnMileage());
+	}
+	
+	private void LastSubmissionCheck(LocalDate estimatedDate, Rental rental) {
+		
+		long days = ChronoUnit.DAYS.between(estimatedDate, rental.getReturnDate());
+		
+		if(days > 0)
+			rental.setTotalPrice(rental.getTotalPrice() * 2);
+		
+		//update edilirken gelen tarih, estimated tarihten daha geç ise
+		//estimated tarihe göre bir fatura kesilir. estimated tarihten, submission tarihe kadar olan yeni bir fatura kesilir. 
+		//bu faturaya ek hizmetler vs dahildir.
+		
 	}
 
 }

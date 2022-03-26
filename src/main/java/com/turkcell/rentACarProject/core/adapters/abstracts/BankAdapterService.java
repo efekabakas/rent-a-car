@@ -4,6 +4,6 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 public interface BankAdapterService {
 
-	Result checkIfLimitIsEnough(String cardNo, String year, String mounth, String cVV, double amount);
+	Result checkIfLimitIsEnough(String cardNo, String year, String month, String cVV, double amount);
 
 }

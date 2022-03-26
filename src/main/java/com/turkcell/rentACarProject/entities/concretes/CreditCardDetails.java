@@ -15,29 +15,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="payments")
-
-public class Payment {
+@Entity
+@Table(name="creditCardDetails")
+public class CreditCardDetails {
 	
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "total_payment")
-	private double totalPayment;
-	
-	@Column(name = "payment_date")
-	private LocalDate paymentDate;
+	@Column(name="card_number")
+	private String cardNumber;
 	
 	@ManyToOne
-	@JoinColumn(name = "rental_id")	
-	private Rental rental;
+	@JoinColumn(name="customer_id")
+	private Customer customer;
 	
-	//card bilgisi
+	@Column(name="card_holder")
+	private String cardHolder;
+	
+	@Column(name="cvv")
+	private int cVV;
+	
+	@Column(name="expiration_date")
+	private LocalDate expirationDate;
 	
 }

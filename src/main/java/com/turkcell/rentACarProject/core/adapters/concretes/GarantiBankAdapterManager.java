@@ -9,10 +9,6 @@ import com.turkcell.rentACarProject.core.externalServices.banks.GarantiBank;
 import com.turkcell.rentACarProject.core.utilities.results.Result;
 import com.turkcell.rentACarProject.core.utilities.results.SuccessResult;
 
-
-
-
-
 @Service
 @Qualifier("garantiBank")
 public class GarantiBankAdapterManager implements BankAdapterService{

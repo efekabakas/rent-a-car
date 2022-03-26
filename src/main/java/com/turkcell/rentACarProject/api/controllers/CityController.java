@@ -3,6 +3,8 @@ package com.turkcell.rentACarProject.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,16 +29,18 @@ public class CityController {
 		this.cityService = cityService;
 	}
 	
-
+	@GetMapping("/getAll")
 	DataResult<List<ListCityDto>> getAll() {
 		return this.cityService.getAll();
 		
 	}
+	
+	@GetMapping("/get")
 	DataResult<ListCityDto> getById(@RequestParam int id){
 		return this.cityService.getById(id); 
 		
 	}
-	
+	@PostMapping("/create")
 	Result create(@RequestBody CreateCityRequest createCityRequest) throws BusinessException {
 		return this.cityService.create(createCityRequest);		
 	}

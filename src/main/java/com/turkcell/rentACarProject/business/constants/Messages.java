@@ -17,4 +17,5 @@ public class Messages {
 	public static final String RentalDeleted = "rental.deleted";
 	public static final String RentalNotFound = "rental.not.found";
 	public static final String CityAdded = "city.added";
+	public static final String CreditCardAdded = "creditCard.added";
 }

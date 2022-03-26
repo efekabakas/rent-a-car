@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 
+import com.turkcell.rentACarProject.business.requests.creditCardDetails.CreateCreditCardDetailsRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +17,8 @@ public class CreatePaymentRequest {
 
 	@NotNull
 	private LocalDate paymentDate;
-
-	@NotNull
 	private int rentalId;
-
-	private String cardNo;
-	private String year;
-	private String mounth;
-	private String cVV;
+	private CreateCreditCardDetailsRequest createCreditCardDetailsRequest;
 	private double amount;
-
+	private boolean saveCreditCard;
 }

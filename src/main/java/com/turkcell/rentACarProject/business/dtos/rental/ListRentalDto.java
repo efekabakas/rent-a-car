@@ -21,3 +21,5 @@ public class ListRentalDto {
 	private int initialCityId;
 	private int returnCityId;
 }
+
+
