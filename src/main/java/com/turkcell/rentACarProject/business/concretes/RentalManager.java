@@ -60,8 +60,8 @@ public class RentalManager implements RentalService {
 		carMaintenanceService.isCarInMaintenance(createRentalRequest.getCarId());
 		isCarRented(createRentalRequest.getCarId());   								
 		
-	    Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
-	    this.rentalDao.save(rental);
+	    Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+	    rentalDao.save(rental);
 	    
 	    return new SuccessResult(Messages.RentalAdded);
 	}
@@ -72,8 +72,8 @@ public class RentalManager implements RentalService {
 		carMaintenanceService.isCarInMaintenance(createRentalRequest.getCarId());
 		isCarRented(createRentalRequest.getCarId());
 		
-	    Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
-	    this.rentalDao.save(rental);
+	    Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+	    rentalDao.save(rental);
 	    
 	    return new SuccessResult(Messages.RentalAdded);
 	}
@@ -82,8 +82,8 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) {
 		
-		Rental rental = this.modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
-		this.rentalDao.delete(rental);
+		Rental rental = modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
+		rentalDao.delete(rental);
 		
 		return new SuccessResult(Messages.RentalDeleted);
 	}
@@ -93,16 +93,15 @@ public class RentalManager implements RentalService {
 		
 		carMaintenanceService.isCarInMaintenance(updateRentalRequest.getCarId());
 		
-		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+		Rental rental = modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
 		
 		LocalDate estimatedDate = getById(updateRentalRequest.getId()).getData().getReturnDate();
-		
-		
+			
 		rental.setTotalPrice(rentalCalculation(rental));
 		
 		updateReturnMileage(rental);
 		
-		this.rentalDao.save(rental);
+		rentalDao.save(rental);
 		
 		return new SuccessResult(Messages.CarUpdated);
 	}
@@ -110,9 +109,9 @@ public class RentalManager implements RentalService {
 	@Override
 	public DataResult<List<ListRentalDto>> getAll() {
 		
-		var result = this.rentalDao.findAll();
+		var result = rentalDao.findAll();
 		List<ListRentalDto> response = result.stream()
-				.map(rental -> this.modelMapperService.forDto().map(rental, ListRentalDto.class))
+				.map(rental -> modelMapperService.forDto().map(rental, ListRentalDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListRentalDto>>(response);
@@ -121,13 +120,14 @@ public class RentalManager implements RentalService {
 	@Override
 	public DataResult<ListRentalDto> getById(int id) {
 
-		Rental result = this.rentalDao.getById(id);
+		Rental result = rentalDao.getById(id);
 		
 		if(result == null) {
 			return new ErrorDataResult<ListRentalDto>(Messages.RentalNotFound);
 		}
 		
-		ListRentalDto response = this.modelMapperService.forDto().map(result, ListRentalDto.class);
+		ListRentalDto response = modelMapperService.forDto().map(result, ListRentalDto.class);
+		
 		return new SuccessDataResult<ListRentalDto>(response);
 	}
 
@@ -160,7 +160,7 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result isCarRented(int id) throws BusinessException {
 		
-		if(this.rentalDao.findByCarIdAndReturnDateIsNull(id) != null) {
+		if(rentalDao.findByCarIdAndReturnDateIsNull(id) != null) {
 			throw new BusinessException(Messages.ThisCarIsRental);
 		}
 		else
@@ -178,11 +178,6 @@ public class RentalManager implements RentalService {
 		
 		if(days > 0)
 			rental.setTotalPrice(rental.getTotalPrice() * 2);
-		
-		//update edilirken gelen tarih, estimated tarihten daha geç ise
-		//estimated tarihe göre bir fatura kesilir. estimated tarihten, submission tarihe kadar olan yeni bir fatura kesilir. 
-		//bu faturaya ek hizmetler vs dahildir.
-		
 	}
 
 }

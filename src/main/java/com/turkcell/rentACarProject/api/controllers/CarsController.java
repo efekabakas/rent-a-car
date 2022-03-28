@@ -23,58 +23,64 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/cars")
-public class CarController {
+public class CarsController {
 
 	private CarService carService;
 
 	@Autowired
-	public CarController(CarService carService) {
+	public CarsController(CarService carService) {
+		
 		this.carService = carService;
 	}
 
 	@PostMapping("/create")
 	public Result add(@RequestBody CreateCarRequest createCarRequest) {
-		return this.carService.create(createCarRequest);
+		
+		return carService.create(createCarRequest);
 	}
 	
 	@GetMapping("/get")
 	public DataResult<ListCarDto> get(@RequestParam int id) {
-		return this.carService.getById(id);
+		
+		return carService.getById(id);
 	}
 	
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateCarRequest updateCarRequest) {
-		return this.carService.update(updateCarRequest);
+		
+		return carService.update(updateCarRequest);
 	}
 
 	@DeleteMapping("/delete")
 	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
-		return this.carService.delete(deleteCarRequest);
+		
+		return carService.delete(deleteCarRequest);
 	}
 
 	@GetMapping("/getAll")
 	public DataResult<List<ListCarDto>> getAll() {
-		return this.carService.getAll();
+		
+		return carService.getAll();
 	}
 	
 	@GetMapping("/getAllPaged")
 	DataResult<List<ListCarDto>> getAllPaged(int pageNo, int pageSize) {
-		return this.carService.getAllPaged(pageNo, pageSize);
+		
+		return carService.getAllPaged(pageNo, pageSize);
 		
 	}
 	
 	@GetMapping("/getAllSorted")
 	DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) {
+		
 		return this.carService.getAllSorted(direction);
 		
 	}
 	
 	@GetMapping("/getAllByDailyPriceLessThanEqual")
 	DataResult<List<ListCarDto>> getAllByDailyPriceLessThanEqual(double dailyPrice) {
-		return this.carService.getAllByDailyPriceLessThanEqual(dailyPrice);
 		
+		return this.carService.getAllByDailyPriceLessThanEqual(dailyPrice);
 	}
-	
-
 	
 }

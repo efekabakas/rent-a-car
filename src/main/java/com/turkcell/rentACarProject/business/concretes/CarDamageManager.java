@@ -23,56 +23,61 @@ public class CarDamageManager implements CarDamageService {
 
 	private CarDamageDao carDamageDao;
 	private ModelMapperService modelMapperService;
-	
+
 	@Autowired
 	public CarDamageManager(CarDamageDao carDamageDao, ModelMapperService modelMapperService) {
+		
 		this.carDamageDao = carDamageDao;
 		this.modelMapperService = modelMapperService;
 	}
-	
+
 	@Override
 	public DataResult<List<ListCarDamageDto>> getAll() {
-		
+
 		var result = this.carDamageDao.findAll();
+
 		List<ListCarDamageDto> response = result.stream()
-				.map(carDamage -> this.modelMapperService.forDto().map(carDamage, ListCarDamageDto.class))
+				.map(carDamage -> modelMapperService.forDto().map(carDamage, ListCarDamageDto.class))
 				.collect(Collectors.toList());
-		
+
 		return new SuccessDataResult<List<ListCarDamageDto>>(response);
 	}
 
 	@Override
 	public DataResult<List<ListCarDamageDto>> getAllByCarId(int id) {
-		
-		List<ListCarDamageDto> carDamageList = this.carDamageDao.getAllByCarId(id);
-		
-        List<ListCarDamageDto> response = carDamageList.stream()
-                .map(carDamage -> modelMapperService.forDto().map(carDamage, ListCarDamageDto.class))
-                .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<ListCarDamageDto>>(response);
+		List<ListCarDamageDto> carDamageList = carDamageDao.getAllByCarId(id);
+
+		List<ListCarDamageDto> response = carDamageList.stream()
+				.map(carDamage -> modelMapperService.forDto().map(carDamage, ListCarDamageDto.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ListCarDamageDto>>(response);
 	}
 
 	@Override
-	public Result create(CreateCarDamageRequest createCarDamageRequest) {		
-	
-	CarDamage carDamage = this.modelMapperService.forRequest().map(createCarDamageRequest, CarDamage.class);
-	this.carDamageDao.save(carDamage);
-	return new SuccessResult("Created damage information of " + createCarDamageRequest.getDescription() + " car.");
+	public Result create(CreateCarDamageRequest createCarDamageRequest) {
+
+		CarDamage carDamage = modelMapperService.forRequest().map(createCarDamageRequest, CarDamage.class);
+		carDamageDao.save(carDamage);
+		
+		return new SuccessResult();
 	}
 
 	@Override
 	public Result update(UpdateCarDamageRequest updateCarDamageRequest) {
+
+		CarDamage carDamage = modelMapperService.forRequest().map(updateCarDamageRequest, CarDamage.class);
+		carDamageDao.save(carDamage);
 		
-		CarDamage carDamage = this.modelMapperService.forRequest().map(updateCarDamageRequest, CarDamage.class);
-		this.carDamageDao.save(carDamage);
-		return new SuccessResult("Updated maintenance information of " + updateCarDamageRequest.getDescription() + " car.");
+		return new SuccessResult();
 	}
 
 	@Override
 	public Result delete(int id) {
-        	carDamageDao.deleteById(id);
-            return new SuccessResult("CarMaintenance.Deleted");
+		
+		carDamageDao.deleteById(id);
+		return new SuccessResult("CarMaintenance.Deleted");
 	}
 
 }

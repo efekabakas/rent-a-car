@@ -22,25 +22,28 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 public class AdditionalServiceItemsController {
 
 	private AdditionalServiceItemService additionalServiceItemService;
-
+	
 	@Autowired
 	public AdditionalServiceItemsController(AdditionalServiceItemService additionalServiceItemService) {
+		
 		this.additionalServiceItemService = additionalServiceItemService;
 	}
 	
 	@PostMapping("/create")
 	Result add(@RequestBody CreateAdditionalServiceItemRequest createAdditionalServiceItemRequest) {
+		
 		return additionalServiceItemService.add(createAdditionalServiceItemRequest);
 	}
 	
 	@GetMapping("/get")
 	DataResult<ListAdditionalServiceItemDto> findById(@RequestParam int id) {
+		
 		return additionalServiceItemService.findById(id);
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListAdditionalServiceItemDto>> getAll() {
-		return additionalServiceItemService.getAll();
 		
+		return additionalServiceItemService.getAll();
 	}
 }

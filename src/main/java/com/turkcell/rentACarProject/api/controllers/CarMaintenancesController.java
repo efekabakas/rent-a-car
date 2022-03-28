@@ -22,38 +22,44 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/carMaintenances")
-public class CarMaintenanceController {
+public class CarMaintenancesController {
 	
 
 	private CarMaintenanceService carMaintenanceService;
 	
 	@Autowired
-	public CarMaintenanceController(CarMaintenanceService carMaintenanceService) {
+	public CarMaintenancesController(CarMaintenanceService carMaintenanceService) {
+		
 		this.carMaintenanceService = carMaintenanceService;
 	}
 	
 	@PostMapping("/create")
 	public Result add(@RequestBody CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException{
-		return this.carMaintenanceService.create(createCarMaintenanceRequest);
+		
+		return carMaintenanceService.create(createCarMaintenanceRequest);
 	}
 	
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateCarMaintenanceRequest updateCarMaintenanceRequest) {
-		return this.carMaintenanceService.update(updateCarMaintenanceRequest);
+		
+		return carMaintenanceService.update(updateCarMaintenanceRequest);
 	}
 
 	@GetMapping("/getAll")
 	public DataResult<List<ListCarMaintenanceDto>> getAll() {
-		return this.carMaintenanceService.getAll();
+		
+		return carMaintenanceService.getAll();
 	}
 	
 	@GetMapping("/getAllByCarId")
 	public DataResult<List<ListCarMaintenanceDto>> getAllByCarId(@RequestParam int id) {
-		return this.carMaintenanceService.getAllByCarId(id);
+		
+		return carMaintenanceService.getAllByCarId(id);
 	}
 	
 	@DeleteMapping("/delete")
 	public Result delete(@RequestParam int id) {
-		return this.carMaintenanceService.delete(id);
+		
+		return carMaintenanceService.delete(id);
 	}
 }

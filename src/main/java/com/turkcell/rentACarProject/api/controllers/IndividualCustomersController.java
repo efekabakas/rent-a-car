@@ -19,29 +19,32 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/individualCustomers")
-public class IndividualCustomerController {
+public class IndividualCustomersController {
 	
 	private IndividualCustomerService individualCustomerService;
 	
 	@Autowired
-	public IndividualCustomerController(IndividualCustomerService customerService) {
+	public IndividualCustomersController(IndividualCustomerService customerService) {
+		
 		this.individualCustomerService = customerService;
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListIndividualCustomerDto>> getAll() {
-		return this.individualCustomerService.getAll();
 		
+		return individualCustomerService.getAll();
 	}
+	
 	@GetMapping("/get")
 	DataResult<ListIndividualCustomerDto> getById(@RequestParam int id) {
-		return this.individualCustomerService.getById(id);
 		
+		return individualCustomerService.getById(id);
 	}
+	
 	@PostMapping("/create")
 	Result create(@RequestBody CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException {
-		return this.individualCustomerService.create(createIndividualCustomerRequest);
 		
+		return individualCustomerService.create(createIndividualCustomerRequest);
 	}
 
 }

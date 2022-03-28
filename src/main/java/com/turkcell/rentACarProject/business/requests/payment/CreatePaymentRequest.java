@@ -17,6 +17,7 @@ public class CreatePaymentRequest {
 
 	@NotNull
 	private LocalDate paymentDate;
+	@NotNull
 	private int rentalId;
 	private CreateCreditCardDetailsRequest createCreditCardDetailsRequest;
 	private double amount;

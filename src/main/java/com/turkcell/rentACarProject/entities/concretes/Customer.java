@@ -25,7 +25,7 @@ public class Customer extends User {
 	private int customerId;
 	
 	@OneToMany(mappedBy = "customer")
-	private List<CreditCardDetails> creditCards;
+	private List<CreditCardDetails> creditCardDetails;
 	
 	@OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}) //merge
     @JsonIgnore

@@ -28,31 +28,37 @@ public class BrandsController {
 
 	@Autowired
 	public BrandsController(BrandService brandService) {
+		
 		this.brandService = brandService;
 	}
 
 	@GetMapping("/getAll")
 	public List<ListBrandDto> getAll() {
-		return this.brandService.getAll();
+		
+		return brandService.getAll();
 	}
 
 	@PostMapping("/create")
 	public void add(@RequestBody CreateBrandRequest createBrandRequest) throws BusinessException {
-		this.brandService.create(createBrandRequest);
+		
+		brandService.create(createBrandRequest);
 	}
 	
 	@DeleteMapping("/delete")
 	public void delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
-		this.brandService.delete(deleteBrandRequest);
+		
+		brandService.delete(deleteBrandRequest);
 	}
 	
 	@PutMapping("/update")
 	public void update(@RequestBody UpdateBrandRequest updateBrandRequest) {
-		this.brandService.update(updateBrandRequest);
+		
+		brandService.update(updateBrandRequest);
 	}
 
 	@GetMapping("/get")
 	public ListBrandDto get(@RequestParam int id) throws BusinessException {
-		return this.brandService.getById(id);
+		
+		return brandService.getById(id);
 	}
 }

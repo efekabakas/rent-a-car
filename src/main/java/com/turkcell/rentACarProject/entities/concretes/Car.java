@@ -32,7 +32,10 @@ public class Car {
 	private double dailyPrice;
 	
 	@Column(name = "model_year")
-	private int modelYear;
+	private Integer modelYear;
+	
+	@Column(name = "mileage")
+	private Integer mileage;
 	
 	@Column(name = "description")
 	private String description;
@@ -50,7 +53,9 @@ public class Car {
 	
 	@OneToMany(mappedBy = "car")
     private List<Rental> rentals;
+    
+	@OneToMany(mappedBy = "car")
+	private List<CarDamage> carDamages;
 	
-	@Column(name = "mileage")
-	private Integer mileage;
+
 }

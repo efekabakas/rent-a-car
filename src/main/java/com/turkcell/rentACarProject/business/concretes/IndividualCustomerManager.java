@@ -28,6 +28,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	
 	@Autowired
 	public IndividualCustomerManager(IndividualCustomerDao customerDao, ModelMapperService modelMapperService) {
+		
 		this.individualCustomerDao = customerDao;
 		this.modelMapperService = modelMapperService;
 	}
@@ -35,10 +36,10 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public DataResult<List<ListIndividualCustomerDto>> getAll() {
 		
-		var result = this.individualCustomerDao.findAll();
+		var result = individualCustomerDao.findAll();
 		
 		List<ListIndividualCustomerDto> response = result.stream()
-				.map(customer -> this.modelMapperService.forDto().map(customer, ListIndividualCustomerDto.class))
+				.map(customer -> modelMapperService.forDto().map(customer, ListIndividualCustomerDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListIndividualCustomerDto>>(response);
@@ -47,12 +48,13 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public DataResult<ListIndividualCustomerDto> getById(int id) {
 		
-		IndividualCustomer result = this.individualCustomerDao.getById(id);
+		IndividualCustomer result = individualCustomerDao.getById(id);
 		
 		if(result == null) {
 			return new ErrorDataResult<ListIndividualCustomerDto>("Car.NotFound");
 		}
-		ListIndividualCustomerDto response = this.modelMapperService.forDto().map(result, ListIndividualCustomerDto.class);		
+		
+		ListIndividualCustomerDto response = modelMapperService.forDto().map(result, ListIndividualCustomerDto.class);		
 		
 		return new SuccessDataResult<ListIndividualCustomerDto>(response);
 	}
@@ -60,8 +62,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result create(CreateIndividualCustomerRequest createCustomerRequest) throws BusinessException {
 		
-		IndividualCustomer customer = this.modelMapperService.forRequest().map(createCustomerRequest, IndividualCustomer.class);
-		this.individualCustomerDao.save(customer);
+		IndividualCustomer customer = modelMapperService.forRequest().map(createCustomerRequest, IndividualCustomer.class);
+		
+		individualCustomerDao.save(customer);
 		
 		return new SuccessResult(Messages.CustomerAdded);
 	}

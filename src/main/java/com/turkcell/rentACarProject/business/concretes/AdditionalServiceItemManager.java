@@ -34,27 +34,34 @@ public class AdditionalServiceItemManager implements AdditionalServiceItemServic
 
 	@Override
 	public Result add(CreateAdditionalServiceItemRequest createAdditionalServiceItemRequest) {
-		AdditionalServiceItem additionalServiceItem = this.modelMapperService.forRequest().map(createAdditionalServiceItemRequest, AdditionalServiceItem.class);
-		this.additionalServiceItemDao.save(additionalServiceItem);
-		return new SuccessResult("");
+		
+		AdditionalServiceItem additionalServiceItem = modelMapperService.forRequest().map(createAdditionalServiceItemRequest, AdditionalServiceItem.class);
+		additionalServiceItemDao.save(additionalServiceItem);
+		
+		return new SuccessResult();
 	}
 
 	@Override
 	public DataResult<ListAdditionalServiceItemDto> findById(int id) {
+		
 		if(additionalServiceItemDao.existsById(id)) {
+			
 			AdditionalServiceItem item = additionalServiceItemDao.findById(id).get();
 			ListAdditionalServiceItemDto response = modelMapperService.forDto().map(item, ListAdditionalServiceItemDto.class);
+			
 			return new SuccessDataResult<ListAdditionalServiceItemDto>(response);
-		}else return new ErrorDataResult<ListAdditionalServiceItemDto>();
+		}
+		else 
+			return new ErrorDataResult<ListAdditionalServiceItemDto>();
 	}
 
 	@Override
 	public DataResult<List<ListAdditionalServiceItemDto>> getAll() {
 		
-		var result = this.additionalServiceItemDao.findAll();
+		var result = additionalServiceItemDao.findAll();
 		
 		List<ListAdditionalServiceItemDto> response = result.stream()
-				.map(additionalServiceItem -> this.modelMapperService.forDto().map(additionalServiceItem, ListAdditionalServiceItemDto.class))
+				.map(additionalServiceItem -> modelMapperService.forDto().map(additionalServiceItem, ListAdditionalServiceItemDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListAdditionalServiceItemDto>>(response);

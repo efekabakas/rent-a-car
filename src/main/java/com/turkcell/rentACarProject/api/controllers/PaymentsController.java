@@ -23,38 +23,45 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/payment")
-public class PaymentController {
+public class PaymentsController {
 	
 	private PaymentService paymentService ;
 	
 	@Autowired	
-	public PaymentController(PaymentService paymentService) {		
+	public PaymentsController(PaymentService paymentService) {		
+		
 		this.paymentService = paymentService;
 	}
+	
 	@PostMapping("/add")
 	public Result add(@RequestBody @Valid CreatePaymentRequest createPaymentRequest)  {
-		return this.paymentService.add(createPaymentRequest);
+		
+		return paymentService.add(createPaymentRequest);
 	}
 
 	@DeleteMapping("/delete")
 	public Result delete(@RequestBody @Valid DeletePaymentRequest deletePaymentRequest)  {
-		return this.paymentService.delete(deletePaymentRequest);
+		
+		return paymentService.delete(deletePaymentRequest);
 	}
 
 
 	@GetMapping("/getAll")
 	public DataResult<List<ListPaymentDto>> getAll() {
-		return this.paymentService.getAll();
+		
+		return paymentService.getAll();
 	}
 
 	@PostMapping("/getAllPaged")
 	public DataResult<List<ListPaymentDto>> getAllPaged(int pageNo, int pageSize) {
-		return this.paymentService.getAllPaged(pageNo, pageSize);
+		
+		return paymentService.getAllPaged(pageNo, pageSize);
 	}
 
 	@GetMapping("/getPaymentByRentalId")
 	public DataResult<ListPaymentDto> getByRentalId(int rentalId)  {
-		return this.paymentService.getByRentalId(rentalId);
+		
+		return paymentService.getByRentalId(rentalId);
 	}
 
 }

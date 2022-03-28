@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class DeletePaymentRequest {
 	
 	@NotNull
-	private int paymentId;
-
+	private int id;
 }

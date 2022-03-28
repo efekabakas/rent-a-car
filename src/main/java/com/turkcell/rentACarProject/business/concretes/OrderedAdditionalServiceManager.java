@@ -36,16 +36,19 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 	
 	@Override
 	public Result add(CreateOrderedAdditionalServiceRequest createAdditionalServiceRequest) {
-		OrderedAdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest, OrderedAdditionalService.class);
 		
+		OrderedAdditionalService additionalService = modelMapperService.forRequest().map(createAdditionalServiceRequest, OrderedAdditionalService.class);
 		additionalService.setId(0);
-		this.additionalServiceDao.save(additionalService);
+		
+		additionalServiceDao.save(additionalService);
+		
 		return new SuccessResult("sss");
 	}
 
 	@Override
 	public DataResult<List<ListOrderedAdditionalServiceDto>> findAllByRentalId(int rentalId) {
-		List<OrderedAdditionalService> additionalServiceList = this.additionalServiceDao.findAllByRentalId(rentalId);
+		
+		List<OrderedAdditionalService> additionalServiceList = additionalServiceDao.findAllByRentalId(rentalId);
 		List<ListOrderedAdditionalServiceDto> response = additionalServiceList.stream().map(
 				additionalService -> modelMapperService.forDto().map(additionalService, ListOrderedAdditionalServiceDto.class))
 				.collect(Collectors.toList());

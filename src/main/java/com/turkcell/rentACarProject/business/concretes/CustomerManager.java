@@ -28,6 +28,7 @@ public class CustomerManager implements CustomerService {
 	
 	@Autowired
 	public CustomerManager(CustomerDao customerDao, ModelMapperService modelMapperService) {
+		
 		this.customerDao = customerDao;
 		this.modelMapperService = modelMapperService;
 	}
@@ -35,29 +36,36 @@ public class CustomerManager implements CustomerService {
 	@Override
 	public DataResult<List<ListCustomerDto>> getAll() {
 		
-		var result = this.customerDao.findAll();
+		var result = customerDao.findAll();
+		
 		List<ListCustomerDto> response = result.stream()
-				.map(customer -> this.modelMapperService.forDto().map(customer, ListCustomerDto.class))
+				.map(customer -> modelMapperService.forDto().map(customer, ListCustomerDto.class))
 				.collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<ListCustomerDto>>(response);
 	}
 
 	@Override
 	public DataResult<ListCustomerDto> getById(int id) {
 		
-		Customer result = this.customerDao.getById(id);
+		Customer result = customerDao.getById(id);
+		
 		if(result == null) {
 			return new ErrorDataResult<ListCustomerDto>("Car.NotFound");
 		}
-		ListCustomerDto response = this.modelMapperService.forDto().map(result, ListCustomerDto.class);		
+		
+		ListCustomerDto response = modelMapperService.forDto().map(result, ListCustomerDto.class);		
+		
 		return new SuccessDataResult<ListCustomerDto>(response);
 	}
 
 	@Override
 	public Result create(CreateCustomerRequest createCustomerRequest) throws BusinessException {
 		
-		Customer customer = this.modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
-		this.customerDao.save(customer);
+		Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
+		
+		customerDao.save(customer);
+		
 		return new SuccessResult(Messages.CustomerAdded);
 	}
 

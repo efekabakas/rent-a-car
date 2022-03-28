@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ListRentalDto {
-    private int id;
+    
+	private int id;
     private LocalDate rentDate;
     private LocalDate returnDate;
     private double additionalPrice;   

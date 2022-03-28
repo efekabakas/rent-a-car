@@ -21,32 +21,37 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/invoices")
-public class InvoiceController {
+public class InvoicesController {
 	
 	private InvoiceService invoiceService;
 
 	@Autowired
-	public InvoiceController(InvoiceService invoiceService) {
+	public InvoicesController(InvoiceService invoiceService) {
+		
 		this.invoiceService = invoiceService;
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListInvoiceDto>> getAll(){
-	return this.invoiceService.getAll();
+	
+		return invoiceService.getAll();
 	}
 	
 	@PostMapping("/create")
 	Result create(@RequestBody CreateInvoiceRequest createInvoiceRequest) {
-		return this.invoiceService.create(createInvoiceRequest);
+		
+		return invoiceService.create(createInvoiceRequest);
 	}
 	
 	@DeleteMapping("/delete")
 	public Result delete(@RequestBody DeleteInvoiceRequest deleteInvoiceRequest) {
-		return this.invoiceService.delete(deleteInvoiceRequest);
+		
+		return invoiceService.delete(deleteInvoiceRequest);
 	}
 	
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateInvoiceRequest updateInvoiceRequest) {
-		return this.invoiceService.update(updateInvoiceRequest);
+		
+		return invoiceService.update(updateInvoiceRequest);
 	}
 }

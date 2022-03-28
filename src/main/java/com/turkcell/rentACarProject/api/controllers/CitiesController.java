@@ -20,29 +20,32 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/cities")
-public class CityController {
-	
+public class CitiesController {
+
 	private CityService cityService;
 
 	@Autowired
-	public CityController(CityService cityService) {
+	public CitiesController(CityService cityService) {
+
 		this.cityService = cityService;
 	}
-	
+
 	@GetMapping("/getAll")
 	DataResult<List<ListCityDto>> getAll() {
-		return this.cityService.getAll();
 		
+		return cityService.getAll();
 	}
-	
+
 	@GetMapping("/get")
-	DataResult<ListCityDto> getById(@RequestParam int id){
-		return this.cityService.getById(id); 
+	DataResult<ListCityDto> getById(@RequestParam int id) {
 		
+		return cityService.getById(id);
 	}
+
 	@PostMapping("/create")
 	Result create(@RequestBody CreateCityRequest createCityRequest) throws BusinessException {
-		return this.cityService.create(createCityRequest);		
+		
+		return cityService.create(createCityRequest);
 	}
-	
+
 }

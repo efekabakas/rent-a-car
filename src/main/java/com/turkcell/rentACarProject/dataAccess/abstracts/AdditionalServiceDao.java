@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.turkcell.rentACarProject.entities.concretes.OrderedAdditionalService;
 
-
 @Repository
 public interface AdditionalServiceDao extends JpaRepository<OrderedAdditionalService, Integer>{
 	

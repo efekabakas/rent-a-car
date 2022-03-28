@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +36,7 @@ public class Invoice {
 	@Column(name = "number_of_days_rented")
 	private int numberOfDaysRented;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
 	

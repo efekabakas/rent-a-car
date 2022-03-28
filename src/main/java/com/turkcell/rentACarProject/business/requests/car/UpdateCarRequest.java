@@ -16,4 +16,5 @@ public class UpdateCarRequest {
 	private int brandId;
 	private int colorId;
 	private int mileage;
+	
 }

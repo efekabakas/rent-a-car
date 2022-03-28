@@ -26,23 +26,32 @@ public class CreditCardDetailsController {
 
 	@Autowired
 	public CreditCardDetailsController(CreditCardDetailsService creditCardDetailsService) {
-		this.creditCardDetailsService = creditCardDetailsService;
-	}
-	
-	@GetMapping("/getAll")
-	DataResult<List<ListCreditCardDetailsDto>> getAll() {
-		return creditCardDetailsService.getAll();
 		
+		this.creditCardDetailsService = creditCardDetailsService;
 	}
 	
 	@GetMapping("/get")
 	DataResult<ListCreditCardDetailsDto> getById(@RequestParam int id) {
-		return creditCardDetailsService.getById(id);
 		
+		return creditCardDetailsService.getById(id);
+	}
+	
+	@GetMapping("/getAll")
+	DataResult<List<ListCreditCardDetailsDto>> getAll() {
+		
+		return creditCardDetailsService.getAll();
+		
+	}
+	
+	@GetMapping("/getAllByCustomerId")
+	DataResult<List<ListCreditCardDetailsDto>> getAllByCustomerId(@RequestParam int customerId) {
+		
+		return creditCardDetailsService.getAllByCustomerId(customerId);
 	}
 	
 	@PostMapping("/create")
 	Result create(@RequestBody CreateCreditCardDetailsRequest cardDetailsRequest) throws BusinessException {
+		
 		return creditCardDetailsService.create(cardDetailsRequest);	
 	}
 	

@@ -29,6 +29,7 @@ public class CreditCardDetailsManager implements CreditCardDetailsService {
 	
 	@Autowired
 	public CreditCardDetailsManager(CreditCardDetailsDao cardDetailsDao, ModelMapperService mapperService) {
+		
 		this.creditCardDetailsDao = cardDetailsDao;
 		this.modelMapperService = mapperService;
 	}
@@ -36,10 +37,10 @@ public class CreditCardDetailsManager implements CreditCardDetailsService {
 	@Override
 	public DataResult<List<ListCreditCardDetailsDto>> getAll() {
 		
-		var result = this.creditCardDetailsDao.findAll();
+		var result = creditCardDetailsDao.findAll();
 		
 		List<ListCreditCardDetailsDto> response = result.stream()
-				.map(creditCardDetails -> this.modelMapperService.forDto().map(creditCardDetails, ListCreditCardDetailsDto.class))
+				.map(creditCardDetails -> modelMapperService.forDto().map(creditCardDetails, ListCreditCardDetailsDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCreditCardDetailsDto>>(response);
@@ -48,14 +49,14 @@ public class CreditCardDetailsManager implements CreditCardDetailsService {
 	@Override
 	public DataResult<ListCreditCardDetailsDto> getById(int id) {
 
-		CreditCardDetails result = this.creditCardDetailsDao.getById(id);
+		CreditCardDetails result = creditCardDetailsDao.getById(id);
 		
 		if(result == null) {
 			
 			return new ErrorDataResult<ListCreditCardDetailsDto>("Car.NotFound");
 		}
 		
-		ListCreditCardDetailsDto response = this.modelMapperService.forDto().map(result, ListCreditCardDetailsDto.class);
+		ListCreditCardDetailsDto response = modelMapperService.forDto().map(result, ListCreditCardDetailsDto.class);
 		
 		return new SuccessDataResult<ListCreditCardDetailsDto>(response);
 	}
@@ -63,11 +64,23 @@ public class CreditCardDetailsManager implements CreditCardDetailsService {
 	@Override
 	public Result create(CreateCreditCardDetailsRequest createCreditCardDetailsRequest) throws BusinessException {
 		
-		CreditCardDetails creditCardDetails = this.modelMapperService.forRequest().map(createCreditCardDetailsRequest, CreditCardDetails.class);
+		CreditCardDetails creditCardDetails = modelMapperService.forRequest().map(createCreditCardDetailsRequest, CreditCardDetails.class);
 		
-		this.creditCardDetailsDao.save(creditCardDetails);
+		creditCardDetailsDao.save(creditCardDetails);
 		
 		return new SuccessResult(Messages.CreditCardAdded);
+	}
+
+	@Override
+	public DataResult<List<ListCreditCardDetailsDto>> getAllByCustomerId(int customerId) {
+
+		var result = creditCardDetailsDao.findAllByCustomerId(customerId);
+		
+		List<ListCreditCardDetailsDto> response = result.stream()
+				.map(creditCardDetails -> modelMapperService.forDto().map(creditCardDetails, ListCreditCardDetailsDto.class))
+				.collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<ListCreditCardDetailsDto>>(response);
 	}
 
 }

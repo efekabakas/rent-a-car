@@ -9,6 +9,7 @@ import com.turkcell.rentACarProject.core.utilities.results.DataResult;
 import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 public interface CustomerService {
+	
 	DataResult<List<ListCustomerDto>> getAll();
 	DataResult<ListCustomerDto> getById(int id);
 	Result create(CreateCustomerRequest createCustomerRequest) throws BusinessException;

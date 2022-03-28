@@ -12,6 +12,8 @@ public interface CreditCardDetailsService {
 	
 	DataResult<List<ListCreditCardDetailsDto>> getAll();
 	DataResult<ListCreditCardDetailsDto> getById(int id);
+	DataResult<List<ListCreditCardDetailsDto>> getAllByCustomerId(int customerId);
+	
 	Result create(CreateCreditCardDetailsRequest cardDetailsRequest) throws BusinessException;
 
 }

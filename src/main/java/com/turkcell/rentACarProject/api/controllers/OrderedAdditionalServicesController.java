@@ -18,24 +18,25 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/orderedAdditionalService")
-public class OrderedAdditionalServiceController {
+public class OrderedAdditionalServicesController {
 
 	OrderedAdditionalServiceService orderedAdditionalServiceService;
 
 	@Autowired
-	public OrderedAdditionalServiceController(OrderedAdditionalServiceService orderedAdditionalServiceService) {
+	public OrderedAdditionalServicesController(OrderedAdditionalServiceService orderedAdditionalServiceService) {
+		
 		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListOrderedAdditionalServiceDto>> findAllByRentalId(@RequestParam int rentalId) {
-		return orderedAdditionalServiceService.findAllByRentalId(rentalId);
 		
+		return orderedAdditionalServiceService.findAllByRentalId(rentalId);
 	}
 	
 	@PostMapping("/create")
 	Result add(@RequestBody CreateOrderedAdditionalServiceRequest createAdditionalServiceRequest) {
-		return orderedAdditionalServiceService.add(createAdditionalServiceRequest);
 		
+		return orderedAdditionalServiceService.add(createAdditionalServiceRequest);
 	}
 }

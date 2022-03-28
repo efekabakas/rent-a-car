@@ -32,6 +32,7 @@ public class CarManager implements CarService {
 
 	@Autowired
 	public CarManager(CarDao carDao, ModelMapperService modelMapperService) {
+		
 		this.carDao = carDao;
 		this.modelMapperService = modelMapperService;
 	}
@@ -39,10 +40,10 @@ public class CarManager implements CarService {
 	@Override
 	public DataResult<List<ListCarDto>> getAll() {
 		
-		var result = this.carDao.findAll();
+		var result = carDao.findAll();
 		
 		List<ListCarDto> response = result.stream()
-				.map(car -> this.modelMapperService.forDto().map(car, ListCarDto.class))
+				.map(car -> modelMapperService.forDto().map(car, ListCarDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCarDto>>(response);
@@ -50,38 +51,42 @@ public class CarManager implements CarService {
 
 	@Override
 	public Result create(CreateCarRequest createCarRequest) {
-		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
-		this.carDao.save(car);
+		
+		Car car = modelMapperService.forRequest().map(createCarRequest, Car.class);
+		carDao.save(car);
+		
 		return new SuccessResult(Messages.CarAdded);
 	}
 
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
-		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
-		this.carDao.delete(car);
-		return new SuccessResult(Messages.CarDeleted);
 		
+		Car car = modelMapperService.forRequest().map(deleteCarRequest, Car.class);
+		carDao.delete(car);
+		
+		return new SuccessResult(Messages.CarDeleted);	
 	}
 
 	@Override
 	public Result update(UpdateCarRequest updateCarRequest) {
-		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
-		this.carDao.save(car);
-		return new SuccessResult(Messages.CarUpdated);
 		
+		Car car = modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		carDao.save(car);
+		
+		return new SuccessResult(Messages.CarUpdated);
 	}
 
 	@Override
 	public DataResult<ListCarDto> getById(int id) {
 		
-		Car result = this.carDao.getCarById(id);
+		Car result = carDao.getCarById(id);
 		
 		if(result == null) {
 			
 			return new ErrorDataResult<ListCarDto>("Car.NotFound");
 		}
 		
-		ListCarDto response = this.modelMapperService.forDto().map(result, ListCarDto.class);
+		ListCarDto response = modelMapperService.forDto().map(result, ListCarDto.class);
 		
 		return new SuccessDataResult<ListCarDto>(response);
 	}
@@ -91,10 +96,10 @@ public class CarManager implements CarService {
 		
 		Pageable pageable = PageRequest.of(pageNo-1, pageSize);
 		
-		List<Car> result = this.carDao.findAll(pageable).getContent();
+		List<Car> result = carDao.findAll(pageable).getContent();
 		
 		List<ListCarDto> response = result.stream()
-				.map(car -> this.modelMapperService.forDto()
+				.map(car -> modelMapperService.forDto()
 				.map(car, ListCarDto.class))
 				.collect(Collectors.toList());
 		
@@ -106,10 +111,10 @@ public class CarManager implements CarService {
 	public DataResult<List<ListCarDto>> getAllByDailyPriceLessThanEqual(double dailyPrice) {
 		
 		
-		List<Car> result = this.carDao.getAllByDailyPriceLessThanEqual(dailyPrice);
+		List<Car> result = carDao.getAllByDailyPriceLessThanEqual(dailyPrice);
 		
 		List<ListCarDto> response = result.stream()
-				.map(car -> this.modelMapperService.forDto()
+				.map(car -> modelMapperService.forDto()
 				.map(car, ListCarDto.class))
 				.collect(Collectors.toList());
 		
@@ -122,10 +127,10 @@ public class CarManager implements CarService {
 		
 		Sort sort = Sort.by(direction, "dailyPrice");
 		
-		List<Car> result = this.carDao.findAll(sort);
+		List<Car> result = carDao.findAll(sort);
 		
 		List<ListCarDto> response = result.stream()
-				.map(car -> this.modelMapperService.forDto()
+				.map(car -> modelMapperService.forDto()
 				.map(car, ListCarDto.class))
 				.collect(Collectors.toList());
 		

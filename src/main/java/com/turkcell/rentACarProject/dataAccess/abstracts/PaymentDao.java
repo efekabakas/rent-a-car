@@ -5,10 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.turkcell.rentACarProject.entities.concretes.Payment;
 
-
-
 @Repository
 public interface PaymentDao extends JpaRepository<Payment, Integer>{
 	
-	Payment getAllByRental_RentalId(int rentalId); 
+	Payment getAllByRental_Id(int rentalId); 
 }

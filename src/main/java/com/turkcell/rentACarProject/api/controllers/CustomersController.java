@@ -19,29 +19,32 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/customers")
-public class CustomerController {
+public class CustomersController {
 	
 	private CustomerService customerService;
 	
 	@Autowired
-	public CustomerController(CustomerService customerService) {
+	public CustomersController(CustomerService customerService) {
+		
 		this.customerService = customerService;
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListCustomerDto>> getAll() {
-		return this.customerService.getAll();
+		
+		return customerService.getAll();
 		
 	}
 	@GetMapping("/get")
 	DataResult<ListCustomerDto> getById(@RequestParam int id) {
-		return this.customerService.getById(id);
+		
+		return customerService.getById(id);
 		
 	}
 	@PostMapping("/create")
 	Result create(@RequestBody CreateCustomerRequest createCustomerRequest) throws BusinessException {
-		return this.customerService.create(createCustomerRequest);
 		
+		return customerService.create(createCustomerRequest);
 	}
 
 }

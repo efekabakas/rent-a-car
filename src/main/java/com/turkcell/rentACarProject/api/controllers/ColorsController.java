@@ -28,31 +28,37 @@ public class ColorsController {
 	
 	@Autowired
 	public ColorsController(ColorService colorService) {
+		
 		this.colorService = colorService;
 	}
 	
 	@GetMapping("/getAll")
 	public List<ListColorDto> getAll(){
+		
 		return this.colorService.getAll();
 	}
 	
 	@PostMapping("/create")
 	public void add(@RequestBody CreateColorRequest createColorRequest) throws BusinessException{
-		this.colorService.create(createColorRequest);
+		
+		colorService.create(createColorRequest);
 	}
 	
 	@DeleteMapping("/delete")
 	public void delete(@RequestBody DeleteColorRequest deleteColorRequest) {
-		this.colorService.delete(deleteColorRequest);
+		
+		colorService.delete(deleteColorRequest);
 	}
 	
 	@PutMapping("/update")
 	public void update(@RequestBody UpdateColorRequest updateColorRequest) {
-		this.colorService.update(updateColorRequest);
+		
+		colorService.update(updateColorRequest);
 	}
 	
 	@GetMapping("/get")
 	public ListColorDto get(@RequestParam int id) throws BusinessException {
-		return this.colorService.getById(id);
+		
+		return colorService.getById(id);
 	}
 }

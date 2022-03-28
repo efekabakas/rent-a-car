@@ -24,50 +24,57 @@ public class ColorManager implements ColorService {
 
 	@Autowired
 	public ColorManager(ColorDao colorDao, ModelMapperService modelMapperService) {
+		
 		this.colorDao = colorDao;
 		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
 	public List<ListColorDto> getAll() {
-		var result = this.colorDao.findAll();
+
+		var result = colorDao.findAll();
+
 		List<ListColorDto> response = result.stream()
-				.map(color -> this.modelMapperService.forDto().map(color, ListColorDto.class))
-				.collect(Collectors.toList());
+				.map(color -> modelMapperService.forDto().map(color, ListColorDto.class)).collect(Collectors.toList());
+
 		return response;
 	}
 
 	@Override
 	public void create(CreateColorRequest createColorRequest) throws BusinessException {
-		Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
+
+		Color color = modelMapperService.forRequest().map(createColorRequest, Color.class);
 		checkIfColorExists(color);
+
 		this.colorDao.save(color);
 	}
 
 	@Override
 	public ListColorDto getById(int id) {
-		Color result = this.colorDao.getColorById(id);
-		ListColorDto response = this.modelMapperService.forDto().map(result, ListColorDto.class);
-		return response;
-	}
 
-	void checkIfColorExists(Color color) throws BusinessException {
-		if (this.colorDao.getColorByName(color.getName()).stream().count() != 0) {
-			throw new BusinessException("Color already exists.");
-		}
+		Color result = colorDao.getColorById(id);
+		ListColorDto response = modelMapperService.forDto().map(result, ListColorDto.class);
+
+		return response;
 	}
 
 	@Override
 	public void delete(DeleteColorRequest deleteColorRequest) {
-		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
-		this.colorDao.delete(color);
-		
+
+		Color color = modelMapperService.forRequest().map(deleteColorRequest, Color.class);
+		colorDao.delete(color);
 	}
 
 	@Override
 	public void update(UpdateColorRequest updateColorRequest) {
-		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
-		this.colorDao.save(color);
-		
+		Color color = modelMapperService.forRequest().map(updateColorRequest, Color.class);
+		colorDao.save(color);
+	}
+
+	void checkIfColorExists(Color color) throws BusinessException {
+
+		if (colorDao.getColorByName(color.getName()).stream().count() != 0) {
+			throw new BusinessException("Color already exists.");
+		}
 	}
 }

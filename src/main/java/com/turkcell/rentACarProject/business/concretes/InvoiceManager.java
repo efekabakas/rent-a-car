@@ -27,15 +27,18 @@ public class InvoiceManager implements InvoiceService{
 
 	@Autowired
 	public InvoiceManager(InvoiceDao invoiceDao, ModelMapperService modelMapperService) {
+		
 		this.invoiceDao = invoiceDao;
 		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
 	public DataResult<List<ListInvoiceDto>> getAll() {
-		var result = this.invoiceDao.findAll();
+		
+		var result = invoiceDao.findAll();
+		
 		List<ListInvoiceDto> response = result.stream()
-				.map(brand -> this.modelMapperService.forDto().map(brand, ListInvoiceDto.class))
+				.map(brand -> modelMapperService.forDto().map(brand, ListInvoiceDto.class))
 				.collect(Collectors.toList());
 		return new SuccessDataResult<List<ListInvoiceDto>>(response);
 	}
@@ -43,24 +46,30 @@ public class InvoiceManager implements InvoiceService{
 	@Override
 	public Result create(CreateInvoiceRequest createInvoiceRequest) {
 		
-		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
-		this.invoiceDao.save(invoice);
+		Invoice invoice = modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
+		
+		invoiceDao.save(invoice);
+		
 		return new SuccessResult("Invoice.Created");
 	}
 
 	@Override
 	public Result delete(DeleteInvoiceRequest deleteInvoiceRequest) {
 		
-		Invoice invoice = this.modelMapperService.forRequest().map(deleteInvoiceRequest, Invoice.class);
-		this.invoiceDao.delete(invoice);
+		Invoice invoice = modelMapperService.forRequest().map(deleteInvoiceRequest, Invoice.class);
+		
+		invoiceDao.delete(invoice);
+		
 		return new SuccessResult("Invoice.Deleted");
 	}
 
 	@Override
 	public Result update(UpdateInvoiceRequest updateInvoiceRequest) {
 		
-		Invoice invoice = this.modelMapperService.forRequest().map(updateInvoiceRequest, Invoice.class);
-		this.invoiceDao.save(invoice);
+		Invoice invoice = modelMapperService.forRequest().map(updateInvoiceRequest, Invoice.class);
+		
+		invoiceDao.save(invoice);
+		
 		return new SuccessResult("Invoice.Updated");
 	}
 

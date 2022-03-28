@@ -34,6 +34,7 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 	@Autowired
 	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, ModelMapperService modelMapperService,
 			@Lazy RentalService rentalService) {
+		
 		this.carMaintenanceDao = carMaintenanceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentalService = rentalService;
@@ -41,9 +42,11 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 
 	@Override
 	public DataResult<List<ListCarMaintenanceDto>> getAll() {
+		
 		var result = this.carMaintenanceDao.findAll();
+		
 		List<ListCarMaintenanceDto> response = result.stream()
-				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenanceDao, ListCarMaintenanceDto.class))
+				.map(carMaintenance -> modelMapperService.forDto().map(carMaintenanceDao, ListCarMaintenanceDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCarMaintenanceDto>>(response);
@@ -52,7 +55,8 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 	@Override
     public DataResult<List<ListCarMaintenanceDto>> getAllByCarId(int id) {
 		
-        List<CarMaintenance> carMaintenanceList = this.carMaintenanceDao.getAllByCarId(id);
+        List<CarMaintenance> carMaintenanceList = carMaintenanceDao.getAllByCarId(id);
+        
         List<ListCarMaintenanceDto> response = carMaintenanceList.stream()
                 .map(carMaintenance -> modelMapperService.forDto().map(carMaintenance, ListCarMaintenanceDto.class))
                 .collect(Collectors.toList());
@@ -65,8 +69,8 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 		rentalService.isCarRented(createCarMaintenanceRequest.getCarId());
 		isCarInMaintenance(createCarMaintenanceRequest.getCarId());
 		
-		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
-		this.carMaintenanceDao.save(carMaintenance);
+		CarMaintenance carMaintenance = modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
+		carMaintenanceDao.save(carMaintenance);
 		
 		return new SuccessResult(Messages.CarMaintenanceAdded);
 	}
@@ -75,8 +79,8 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 	public Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) {
 		
 		
-		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
-		this.carMaintenanceDao.save(carMaintenance);
+		CarMaintenance carMaintenance = modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
+		carMaintenanceDao.save(carMaintenance);
 		
 		return new SuccessResult(Messages.CarMaintenanceUpdated);
 	}
@@ -84,7 +88,8 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 	@Override
     public Result delete(int id) {
 		
-        if (this.carMaintenanceDao.existsById(id)) {
+        if (carMaintenanceDao.existsById(id)) {
+        	
         	carMaintenanceDao.deleteById(id);
             return new SuccessResult(Messages.CarMaintenanceDeleted);
             
@@ -95,7 +100,7 @@ public class CarMaintenanceManager implements CarMaintenanceService{
 	@Override
 	public Result isCarInMaintenance(int carId) throws BusinessException {
 		
-		if(this.carMaintenanceDao.findByCarIdAndReturnDateIsNull(carId) != null)
+		if(carMaintenanceDao.findByCarIdAndReturnDateIsNull(carId) != null)
 			throw new BusinessException(Messages.CarIsInMaintenance);
 		
 		else

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCreditCardDetailsRequest {
 	
-	private int id;
 	private String cardNumber;
 	private int customerId;
 	private String cardHolder;

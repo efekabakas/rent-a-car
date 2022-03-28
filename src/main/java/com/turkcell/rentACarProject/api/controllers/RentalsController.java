@@ -30,42 +30,50 @@ public class RentalsController {
 	
 	@Autowired
 	public RentalsController(RentalService rentalService) {
+		
 		this.rentalService = rentalService;
 	}
 	
 	@PostMapping("/createCorporateCustomer")
 	Result createCorporateCustomer(@RequestBody @Valid CreateRentalRequest createRentalRequest) throws BusinessException {
-		return this.rentalService.createForCorporateCustomer(createRentalRequest);
+		
+		return rentalService.createForCorporateCustomer(createRentalRequest);
 	}
 	
 	@PostMapping("/createIndividualCustomer")
 	Result createIndividualCustomer(@RequestBody @Valid CreateRentalRequest createRentalRequest) throws BusinessException {
-		return this.rentalService.createForIndividualCustomer(createRentalRequest);
+		
+		return rentalService.createForIndividualCustomer(createRentalRequest);
 	}
 	
 	@DeleteMapping("/delete")
 	Result delete(DeleteRentalRequest deleteCarRequest) {
-		return this.rentalService.delete(deleteCarRequest);		
+		
+		return rentalService.delete(deleteCarRequest);		
 	}
 
 	@PutMapping("/update")
 	Result update(UpdateRentalRequest updateCarRequest) {
-		return this.rentalService.update(updateCarRequest);
+		
+		return rentalService.update(updateCarRequest);
 	}
 
 	@GetMapping("/getAll")
 	DataResult<List<ListRentalDto>> getAll() {
-		return this.rentalService.getAll();
+		
+		return rentalService.getAll();
 	}
 
 	@GetMapping("/get")
 	DataResult<ListRentalDto> getById(int id) {
-		return this.rentalService.getById(id);
+		
+		return rentalService.getById(id);
 	}
 
 	@GetMapping("/isRented")
 	Result isCarRented(int carId) throws BusinessException {
-		return this.rentalService.isCarRented(carId);
+		
+		return rentalService.isCarRented(carId);
 	}
 	
 }

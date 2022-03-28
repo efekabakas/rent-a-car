@@ -20,28 +20,30 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/corporateCustomers")
-public class CorporateCustomerController {
+public class CorporateCustomersController {
 	
 	private CorporateCustomerService corporateCustomerService;
 	
 	@Autowired
-	public CorporateCustomerController(CorporateCustomerService corporateCustomerService) {
+	public CorporateCustomersController(CorporateCustomerService corporateCustomerService) {
+		
 		this.corporateCustomerService = corporateCustomerService;
 	}
 	
 	@GetMapping("/getAll")
 	DataResult<List<ListCorporateCustomerDto>> getAll() {
-		return this.corporateCustomerService.getAll();
+		
+		return corporateCustomerService.getAll();
 		
 	}
 	@GetMapping("/get")
 	DataResult<ListCorporateCustomerDto> getById(@RequestParam int id) {
-		return this.corporateCustomerService.getById(id);
 		
+		return corporateCustomerService.getById(id);
 	}
 	@PostMapping("/create")
 	Result create(@RequestBody CreateCorporateCustomerRequest createCorporateCustomerRequest) throws BusinessException {
-		return this.corporateCustomerService.create(createCorporateCustomerRequest);
 		
+		return corporateCustomerService.create(createCorporateCustomerRequest);
 	}
 }

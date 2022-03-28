@@ -21,37 +21,43 @@ import com.turkcell.rentACarProject.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/carDamages")
-public class CarDamageController {
+public class CarDamagesController {
 
 	private CarDamageService carDamageService;
 
 	@Autowired
-	public CarDamageController(CarDamageService carDamageService) {
+	public CarDamagesController(CarDamageService carDamageService) {
+		
 		this.carDamageService = carDamageService;
 	}
 
 	@PostMapping("/create")
 	public Result add(@RequestBody CreateCarDamageRequest createCarDamageRequest) {
-		return this.carDamageService.create(createCarDamageRequest);
+		
+		return carDamageService.create(createCarDamageRequest);
 	}
 
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateCarDamageRequest updateCarDamageRequest) {
-		return this.carDamageService.update(updateCarDamageRequest);
+		
+		return carDamageService.update(updateCarDamageRequest);
 	}
 
 	@GetMapping("/getAll")
 	public DataResult<List<ListCarDamageDto>> getAll() {
-		return this.carDamageService.getAll();
+		
+		return carDamageService.getAll();
 	}
 
 	@GetMapping("/getAllByCarId")
 	public DataResult<List<ListCarDamageDto>> getAllByCarId(@RequestParam int id) {
-		return this.carDamageService.getAllByCarId(id);
+		
+		return carDamageService.getAllByCarId(id);
 	}
 
 	@DeleteMapping("/delete")
 	public Result delete(@RequestParam int id) {
-		return this.carDamageService.delete(id);
+		
+		return carDamageService.delete(id);
 	}
 }

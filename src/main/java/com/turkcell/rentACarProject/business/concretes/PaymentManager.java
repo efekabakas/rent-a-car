@@ -74,34 +74,30 @@ public class PaymentManager implements PaymentService {
 
 		double totalPrice = rentalCalculation(rental);
 
-		this.bankAdapterService.checkIfLimitIsEnough(createPaymentRequest.getCreateCreditCardDetailsRequest().getCardNumber(), 
+		bankAdapterService.checkIfLimitIsEnough(createPaymentRequest.getCreateCreditCardDetailsRequest().getCardNumber(), 
 				Integer.toString(createPaymentRequest.getCreateCreditCardDetailsRequest().getExpirationDate().getYear()),
 				createPaymentRequest.getCreateCreditCardDetailsRequest().getExpirationDate().getMonth().toString(), 
 				Integer.toString(createPaymentRequest.getCreateCreditCardDetailsRequest().getCVV()), totalPrice);
 
-		Payment payment = this.modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
+		Payment payment = modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
 
 		payment.setTotalPayment(totalPrice);
 
 		payment.setId(0);
 		
-		this.paymentDao.save(payment);
+		paymentDao.save(payment);
 
 		return new SuccessResult();
 	}
 	
-	private Result saveCreditCard(CreateCreditCardDetailsRequest createCreditCardDetailsRequest) {
-		
-		return creditCardDetailsService.create(createCreditCardDetailsRequest);
-	}
 
 	@Override
 	public Result delete(DeletePaymentRequest deletePaymentRequest) {
 
-		checkPaymentExists(deletePaymentRequest.getPaymentId());
+		checkPaymentExists(deletePaymentRequest.getId());
 
-		Payment payment = this.modelMapperService.forRequest().map(deletePaymentRequest, Payment.class);
-		this.paymentDao.deleteById(payment.getId());
+		Payment payment = modelMapperService.forRequest().map(deletePaymentRequest, Payment.class);
+		paymentDao.deleteById(payment.getId());
 
 		return new SuccessResult();
 	}
@@ -109,9 +105,9 @@ public class PaymentManager implements PaymentService {
 	@Override
 	public DataResult<List<ListPaymentDto>> getAll() {
 
-		List<Payment> result = this.paymentDao.findAll();
+		List<Payment> result = paymentDao.findAll();
 		List<ListPaymentDto> response = result.stream()
-				.map(payment -> this.modelMapperService.forDto().map(payment, ListPaymentDto.class))
+				.map(payment -> modelMapperService.forDto().map(payment, ListPaymentDto.class))
 				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ListPaymentDto>>(response);
@@ -122,9 +118,9 @@ public class PaymentManager implements PaymentService {
 
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-		List<Payment> result = this.paymentDao.findAll(pageable).getContent();
+		List<Payment> result = paymentDao.findAll(pageable).getContent();
 		List<ListPaymentDto> response = result.stream()
-				.map(payment -> this.modelMapperService.forDto().map(payment, ListPaymentDto.class))
+				.map(payment -> modelMapperService.forDto().map(payment, ListPaymentDto.class))
 				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ListPaymentDto>>(response);
@@ -135,8 +131,8 @@ public class PaymentManager implements PaymentService {
 
 		// this.rentalService.checkRentCarExists(rentalId);
 
-		var result = this.paymentDao.getAllByRental_RentalId(rentalId);
-		ListPaymentDto response = this.modelMapperService.forDto().map(result, ListPaymentDto.class);
+		var result = paymentDao.getAllByRental_Id(rentalId);
+		ListPaymentDto response = modelMapperService.forDto().map(result, ListPaymentDto.class);
 
 		return new SuccessDataResult<ListPaymentDto>(response);
 	}
@@ -144,7 +140,8 @@ public class PaymentManager implements PaymentService {
 	@Override
 	public boolean checkPaymentRentalId(int rentalId) {
 
-		var result = this.paymentDao.getAllByRental_RentalId(rentalId);
+		var result = paymentDao.getAllByRental_Id(rentalId);
+		
 		if (result != null) {
 			throw new BusinessException("Daha önce ödemesi alınmıştır.");
 		}
@@ -153,7 +150,8 @@ public class PaymentManager implements PaymentService {
 
 	private boolean checkPaymentExists(int paymentId) {
 
-		var result = this.paymentDao.existsById(paymentId);
+		var result = paymentDao.existsById(paymentId);
+		
 		if (result) {
 			return true;
 		}
@@ -185,5 +183,10 @@ public class PaymentManager implements PaymentService {
 		totalPrice += days * carService.getById(rental.getCarId()).getData().getCarDailyPrice();
 
 		return totalPrice;
+	}
+
+	private Result saveCreditCard(CreateCreditCardDetailsRequest createCreditCardDetailsRequest) {
+		
+		return creditCardDetailsService.create(createCreditCardDetailsRequest);
 	}
 }

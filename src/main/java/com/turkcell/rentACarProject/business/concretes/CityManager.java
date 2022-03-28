@@ -27,6 +27,7 @@ public class CityManager implements CityService{
 	
 	
 	public CityManager(CityDao cityDao, ModelMapperService modelMapperService) {
+		
 		this.cityDao = cityDao;
 		this.modelMapperService = modelMapperService;
 	}
@@ -34,10 +35,10 @@ public class CityManager implements CityService{
 	@Override
 	public DataResult<List<ListCityDto>> getAll() {
 		
-		var result = this.cityDao.findAll();
+		var result = cityDao.findAll();
 		
 		List<ListCityDto> response = result.stream()
-				.map(city -> this.modelMapperService.forDto().map(city, ListCityDto.class))
+				.map(city -> modelMapperService.forDto().map(city, ListCityDto.class))
 				.collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCityDto>>(response);
@@ -46,12 +47,13 @@ public class CityManager implements CityService{
 	@Override
 	public DataResult<ListCityDto> getById(int id) {
 		
-		City result = this.cityDao.getById(id);
+		City result = cityDao.getById(id);
 		
 		if(result == null) {
 			return new ErrorDataResult<ListCityDto>("City.NotFound");
 		}
-		ListCityDto response = this.modelMapperService.forDto().map(result, ListCityDto.class);		
+		
+		ListCityDto response = modelMapperService.forDto().map(result, ListCityDto.class);		
 		
 		return new SuccessDataResult<ListCityDto>(response);
 	}
@@ -59,9 +61,9 @@ public class CityManager implements CityService{
 	@Override
 	public Result create(CreateCityRequest createCityRequest) throws BusinessException {
 		
-	City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
+		City city = modelMapperService.forRequest().map(createCityRequest, City.class);
 		
-		this.cityDao.save(city);
+		cityDao.save(city);
 		
 		return new SuccessResult(Messages.CityAdded);
 	}
